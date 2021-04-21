@@ -1,4 +1,4 @@
-module github.com/renproject/multichain
+module github.com/ReniR256/multichain
 
 go 1.14
 
@@ -18,10 +18,10 @@ require (
 	github.com/near/borsh-go v0.3.0
 	github.com/onsi/ginkgo v1.14.0
 	github.com/onsi/gomega v1.10.1
-	github.com/renproject/id v0.4.2
-	github.com/renproject/pack v0.2.5
+	github.com/ReniR256/id v0.4.2
+	github.com/ReniR256/pack v0.2.5
 	github.com/renproject/solana-ffi v0.1.1
-	github.com/renproject/surge v1.2.6
+	github.com/ReniR256/surge v1.2.6
 	github.com/tendermint/tendermint v0.33.8
 	github.com/terra-project/core v0.4.0-rc.4
 	go.uber.org/zap v1.15.0
