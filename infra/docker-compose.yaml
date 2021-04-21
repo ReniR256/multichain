@@ -107,6 +107,18 @@ services:
       - "0.0.0.0:1234:1234"
     entrypoint:
       - "/root/run.sh"
+      
+  #
+  # Bitblocks
+  #
+  bitblocks:
+    build:
+      context: ./bitblocks
+    ports:
+      - "0.0.0.0:18232:18232"
+    entrypoint:
+      - "./root/run.sh"
+      - "${BITBLOCKS_ADDRESS}"      
 
   #
   # Zcash
