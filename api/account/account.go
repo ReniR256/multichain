@@ -6,9 +6,9 @@ package account
 import (
 	"context"
 
-	"github.com/renproject/multichain/api/address"
-	"github.com/renproject/multichain/api/contract"
-	"github.com/renproject/pack"
+	"ghttps://github.com/ReniR256/multichain/tree/master/api/address"
+	"https://github.com/ReniR256/multichain/tree/master/api/contract"
+	"github.com/ReniR256/pack"
 )
 
 // The Tx interfaces defines the functionality that must be exposed by
