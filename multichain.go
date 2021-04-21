@@ -3,12 +3,12 @@
 package multichain
 
 import (
-	"github.com/renproject/multichain/api/account"
-	"github.com/renproject/multichain/api/address"
-	"github.com/renproject/multichain/api/contract"
-	"github.com/renproject/multichain/api/gas"
-	"github.com/renproject/multichain/api/utxo"
-	"github.com/renproject/surge"
+	"github.com/ReniR256/multichain/tree/master/api/account"
+	"github.com/ReniR256/multichain/tree/master/api/address"
+	"github.com/ReniR256/multichain/tree/master/api/contract"
+	"github.com/ReniR256/multichain/tree/master/api/gas"
+	"github.com/ReniR256/multichain/tree/master/api/utxo"
+	"github.com/ReniR256/surge"
 )
 
 type (
@@ -110,6 +110,7 @@ const (
 	FTM  = Asset("FTM")  // Fantom
 	SOL  = Asset("SOL")  // Solana
 	LUNA = Asset("LUNA") // Luna
+	XBB  = Asset("XBB")  // Bitblocks
 	ZEC  = Asset("ZEC")  // Zcash
 
 	// These assets are defined separately because they are mock assets. These
@@ -146,6 +147,8 @@ func (asset Asset) OriginChain() Chain {
 		return Terra
 	case SOL:
 		return Solana
+	case XBB:
+		return Bitblocks
 	case ZEC:
 		return Zcash
 
@@ -167,7 +170,7 @@ func (asset Asset) OriginChain() Chain {
 // ChainType returns the chain-type (Account or UTXO) for the given asset
 func (asset Asset) ChainType() ChainType {
 	switch asset {
-	case BCH, BTC, DGB, DOGE, ZEC:
+	case BCH, BTC, DGB, DOGE, XBB, ZEC:
 		return ChainTypeUTXOBased
 	case BNB, ETH, FIL, LUNA:
 		return ChainTypeAccountBased
@@ -220,6 +223,7 @@ const (
 	Filecoin          = Chain("Filecoin")
 	Solana            = Chain("Solana")
 	Terra             = Chain("Terra")
+	Bitblocks         = Chain("Bitblocks")
 	Zcash             = Chain("Zcash")
 
 	// These chains are defined separately because they are mock chains. These
@@ -252,7 +256,7 @@ func (chain *Chain) Unmarshal(buf []byte, rem int) ([]byte, int, error) {
 // for the chain.
 func (chain Chain) ChainType() ChainType {
 	switch chain {
-	case Bitcoin, BitcoinCash, DigiByte, Dogecoin, Zcash:
+	case Bitcoin, BitcoinCash, DigiByte, Dogecoin, Bitblocks, Zcash:
 		return ChainTypeUTXOBased
 	case BinanceSmartChain, Ethereum, Fantom, Filecoin, Solana, Terra:
 		return ChainTypeAccountBased
@@ -306,6 +310,8 @@ func (chain Chain) NativeAsset() Asset {
 		return SOL
 	case Terra:
 		return LUNA
+	case Bitblocks:
+		return XBB
 	case Zcash:
 		return ZEC
 
