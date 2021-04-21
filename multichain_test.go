@@ -23,8 +23,8 @@ import (
 	cosmossdk "github.com/cosmos/cosmos-sdk/types"
 	filaddress "github.com/filecoin-project/go-address"
 	filtypes "github.com/filecoin-project/lotus/chain/types"
-	"github.com/renproject/id"
-	"github.com/renproject/multichain"
+	"github.com/ReniR256/id"
+	"github.com/ReniR256/multichain"
 	"github.com/renproject/multichain/chain/bitcoin"
 	"github.com/renproject/multichain/chain/bitcoincash"
 
@@ -32,9 +32,10 @@ import (
 	"github.com/renproject/multichain/chain/dogecoin"
 	"github.com/renproject/multichain/chain/filecoin"
 	"github.com/renproject/multichain/chain/terra"
+	"github.com/renproject/multichain/chain/bitblocks"
 	"github.com/renproject/multichain/chain/zcash"
-	"github.com/renproject/pack"
-	"github.com/renproject/surge"
+	"github.com/ReniR256/pack"
+	"github.com/ReniR256/surge"
 	"github.com/tendermint/tendermint/crypto/secp256k1"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
@@ -49,6 +50,7 @@ var (
 	testDOGE = flag.Bool("doge", false, "Pass this flag to test Dogecoin")
 	testFIL  = flag.Bool("fil", false, "Pass this flag to test Filecoin")
 	testLUNA = flag.Bool("luna", false, "Pass this flag to test Terra")
+	testXBB  = flag.Bool("xbb", false, "Pass this flag to test Bitblocks")
 	testZEC  = flag.Bool("zec", false, "Pass this flag to test Zcash")
 )
 
@@ -72,6 +74,7 @@ var _ = Describe("Multichain", func() {
 	testFlags[multichain.Dogecoin] = *testDOGE
 	testFlags[multichain.Filecoin] = *testFIL
 	testFlags[multichain.Terra] = *testLUNA
+	testFlags[multichain.Bitblocks] = *testXBB
 	testFlags[multichain.Zcash] = *testZEC
 
 	//
@@ -119,6 +122,10 @@ var _ = Describe("Multichain", func() {
 				{
 					multichain.Dogecoin,
 					multichain.DOGE,
+				},
+				{
+					multichain.Bitblocks,
+					multichain.XBB,
 				},
 				{
 					multichain.Zcash,
@@ -301,6 +308,43 @@ var _ = Describe("Multichain", func() {
 					addrBytes = append([]byte{8}, addrBytes...)
 					return multichain.RawAddress(pack.Bytes(addrBytes))
 				},
+			},
+			{
+				multichain.Bitblocks,
+				func() multichain.AddressEncodeDecoder {
+					addrEncodeDecoder := bitblocks.NewAddressEncodeDecoder(&bitblocks.RegressionNetParams)
+					return addrEncodeDecoder
+				},
+				func() multichain.Address {
+					pk := id.NewPrivKey()
+					wif, err := btcutil.NewWIF((*btcec.PrivateKey)(pk), bitblocks.RegressionNetParams.Params, true)
+					Expect(err).NotTo(HaveOccurred())
+					addrPubKeyHash, err := bitblocks.NewAddressPubKeyHash(btcutil.Hash160(wif.PrivKey.PubKey().SerializeUncompressed()), &bitblocks.RegressionNetParams)
+					Expect(err).NotTo(HaveOccurred())
+					return multichain.Address(addrPubKeyHash.EncodeAddress())
+				},
+				func() multichain.RawAddress {
+					pk := id.NewPrivKey()
+					wif, err := btcutil.NewWIF((*btcec.PrivateKey)(pk), bitblocks.RegressionNetParams.Params, true)
+					Expect(err).NotTo(HaveOccurred())
+					addrPubKeyHash, err := bitblocks.NewAddressPubKeyHash(btcutil.Hash160(wif.PrivKey.PubKey().SerializeUncompressed()), &bitblocks.RegressionNetParams)
+					Expect(err).NotTo(HaveOccurred())
+					return multichain.RawAddress(pack.Bytes(base58.Decode(addrPubKeyHash.EncodeAddress())))
+				},
+				func() multichain.Address {
+					script := make([]byte, r.Intn(100))
+					r.Read(script)
+					addrScriptHash, err := bitblocks.NewAddressScriptHash(script, &bitblocks.RegressionNetParams)
+					Expect(err).NotTo(HaveOccurred())
+					return multichain.Address(addrScriptHash.EncodeAddress())
+				},
+				func() multichain.RawAddress {
+					script := make([]byte, r.Intn(100))
+					r.Read(script)
+					addrScriptHash, err := bitblocks.NewAddressScriptHash(script, &bitblocks.RegressionNetParams)
+					Expect(err).NotTo(HaveOccurred())
+					return multichain.RawAddress(pack.Bytes(base58.Decode(addrScriptHash.EncodeAddress())))
+				},	
 			},
 			{
 				multichain.Zcash,
@@ -746,6 +790,26 @@ var _ = Describe("Multichain", func() {
 				},
 				dogecoin.NewTxBuilder(&dogecoin.RegressionNetParams),
 				multichain.Dogecoin,
+			},
+			{
+				"BITBLOCKS_PK",
+				func(pkh []byte) (btcutil.Address, error) {
+					addr, err := bitblocks.NewAddressPubKeyHash(pkh, &bitblocks.RegressionNetParams)
+					return addr, err
+				},
+				func(script []byte) (btcutil.Address, error) {
+					addr, err := bitblocks.NewAddressScriptHash(script, &bitblocks.RegressionNetParams)
+					return addr, err
+				},
+				pack.String("http://0.0.0.0:18232"),
+				func(rpcURL pack.String, pkhAddr btcutil.Address) (multichain.UTXOClient, []multichain.UTXOutput, func(context.Context, pack.Bytes) (int64, error)) {
+					client := bitblocks.NewClient(bitblocks.DefaultClientOptions())
+					outputs, err := client.UnspentOutputs(ctx, 0, 999999999, multichain.Address(pkhAddr.EncodeAddress()))
+					Expect(err).NotTo(HaveOccurred())
+					return client, outputs, client.Confirmations
+				},
+				bitblocks.NewTxBuilder(&bitblocks.RegressionNetParams, 1000000),
+				multichain.Bitblocks,
 			},
 			{
 				"ZCASH_PK",
