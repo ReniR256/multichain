@@ -6,8 +6,8 @@ package utxo
 import (
 	"context"
 
-	"github.com/renproject/multichain/api/address"
-	"github.com/renproject/pack"
+	"https://github.com/ReniR256/multichain/tree/master/api/address"
+	"github.com/ReniR256/pack"
 )
 
 // An Outpoint identifies a specific output produced by a transaction.
