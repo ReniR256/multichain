@@ -2,7 +2,7 @@
 // so that addresses can be encoded/decoded.
 package address
 
-import "github.com/renproject/pack"
+import "github.com/ReniR256/pack"
 
 // An Address is a human-readable representation of a public identity. It can be
 // the address of an external account, contract, or script.
