@@ -6,8 +6,8 @@ package contract
 import (
 	"context"
 
-	"github.com/renproject/multichain/api/address"
-	"github.com/renproject/pack"
+	"https://github.com/ReniR256/multichain/tree/master/api/address"
+	"github.com/ReniR256/pack"
 )
 
 // CallData is used to specify a function and its parameters when invoking
