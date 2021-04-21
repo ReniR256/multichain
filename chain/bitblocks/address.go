@@ -1,6 +1,6 @@
 package bitblocks
 
-import "github.com/renproject/multichain/chain/bitcoin"
+import "github.com/ReniR256/multichain/chain/bitcoin"
 
 type (
 	// AddressEncoder re-exports bitcoin.AddressEncoder.
