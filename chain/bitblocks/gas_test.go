@@ -3,7 +3,7 @@ package bitblocks_test
 import (
 	"context"
 
-	"github.com/ReniR256/multichain/chain/bitblocks"
+	"github.com/ReniR256/multichain/tree/master/chain/bitblocks"
 	"github.com/ReniR256/pack"
 
 	. "github.com/onsi/ginkgo"
