@@ -1,6 +1,6 @@
 package bitblocks
 
-import "github.com/ReniR256/multichain/chain/bitcoin"
+import "github.com/ReniR256/multichain/tree/master/chain/bitcoin"
 
 type (
 	// Tx re-exports bitcoin.Tx.
