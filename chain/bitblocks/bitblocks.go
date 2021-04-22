@@ -22,13 +22,13 @@ var MainNetParams = chaincfg.Params{
 	Net:  0xc0c0c0c0,
 
 	// Address encoding magics
-	PubKeyHashAddrID: 30,
-	ScriptHashAddrID: 22,
-	PrivateKeyID:     158,
+	PubKeyHashAddrID: 25,
+	ScriptHashAddrID: 5,
+	PrivateKeyID:     153,
 
 	// BIP32 hierarchical deterministic extended key magics
-	HDPrivateKeyID: [4]byte{0x02, 0xfa, 0xc3, 0x98}, // starts with xprv
-	HDPublicKeyID:  [4]byte{0x02, 0xfa, 0xca, 0xfd}, // starts with xpub
+	HDPrivateKeyID: [4]byte{0x0, 0x0, 0x0, 0x0}, // not compatible
+	HDPublicKeyID:  [4]byte{0x0, 0x0, 0x0, 0x0}, // not compatible
 
 	// Human-readable part for Bech32 encoded segwit addresses, as defined in
 	// BIP 173. Bitblocks does not actually support this, but we do not want to
@@ -47,8 +47,8 @@ var TestNetParams = chaincfg.Params{
 	PrivateKeyID:     241,
 
 	// BIP32 hierarchical deterministic extended key magics
-	HDPrivateKeyID: [4]byte{0x04, 0x35, 0x83, 0x94}, // starts with xprv
-	HDPublicKeyID:  [4]byte{0x04, 0x35, 0x87, 0xcf}, // starts with xpub
+	HDPrivateKeyID: [4]byte{0x0, 0x0, 0x0, 0x0}, // not compatible
+	HDPublicKeyID:  [4]byte{0x0, 0x0, 0x0, 0x0}, // not compatible
 
 	// Human-readable part for Bech32 encoded segwit addresses, as defined in
 	// BIP 173. Bitblocks does not actually support this, but we do not want to
@@ -71,8 +71,8 @@ var RegressionNetParams = chaincfg.Params{
 	PrivateKeyID:     239,
 
 	// BIP32 hierarchical deterministic extended key magics
-	HDPrivateKeyID: [4]byte{0x04, 0x35, 0x83, 0x94}, // starts with xprv
-	HDPublicKeyID:  [4]byte{0x04, 0x35, 0x87, 0xcf}, // starts with xpub
+	HDPrivateKeyID: [4]byte{0x0, 0x0, 0x0, 0x0}, // not compatible
+	HDPublicKeyID:  [4]byte{0x0, 0x0, 0x0, 0x0}, // not compatible
 
 	// Human-readable part for Bech32 encoded segwit addresses, as defined in
 	// BIP 173. Bitblocks does not actually support this, but we do not want to
