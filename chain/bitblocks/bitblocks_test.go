@@ -9,9 +9,9 @@ import (
 
 	"github.com/btcsuite/btcutil"
 	"github.com/ReniR256/id"
-	"github.com/ReniR256/multichain/api/address"
-	"github.com/ReniR256/multichain/api/utxo"
-	"github.com/ReniR256/multichain/chain/bitblocks"
+	"github.com/ReniR256/multichain/tree/master/api/address"
+	"github.com/ReniR256/multichain/tree/master/api/utxo"
+	"github.com/ReniR256/multichain/tree/master/chain/bitblocks"
 	"github.com/ReniR256/pack"
 
 	. "github.com/onsi/ginkgo"
